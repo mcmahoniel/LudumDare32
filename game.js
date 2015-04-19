@@ -11,8 +11,9 @@ var time;
 function preload() {
     // Load the background image and game sprites
     game.load.image('background', 'assets/background.png');
-    game.load.image('test_flower', 'assets/test_flower.png');
     game.load.image('plot', 'assets/plot.png');
+    game.load.image('flower_1', 'assets/flower_1.png');
+    game.load.image('flower_2', 'assets/flower_2.png');
 }
 
 function create() {
@@ -51,7 +52,9 @@ function create() {
     flowers.enableBody = true;
     flowers.physicsBodyType = Phaser.Physics.ARCADE;
     for (var i = 0; i < 10; i++) {
-        flower = flowers.create(-100, -100, 'test_flower');
+        // Spawn a random flower type
+        var whichFlower = Math.floor(Math.random() * 2 +1);
+        flower = flowers.create(-100, -100, 'flower_' + whichFlower);
     }
     
     // Define the weeds group and add physics properties
@@ -81,6 +84,7 @@ function update() {
 
             done = true;
         }
+        
         time = game.time.now;
     }
 }
