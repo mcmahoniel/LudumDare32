@@ -9,6 +9,7 @@ var weeds;
 var weapons;
 
 // Declare the text fields
+var gameInfoText;
 var flowerText;
 var weedText;
 
@@ -37,6 +38,9 @@ var uav_sound;
 var flower_pain_sound_1;
 var flower_pain_sound_2;
 var weed_pain_sound;
+
+// Declare our game state
+var paused = true;
 
 function preload() {
     // Load the background image and game sprites
@@ -78,10 +82,6 @@ function create() {
     fireball_button = game.add.sprite(146, 479, 'fireball_icon');
     sawblade_button = game.add.sprite(558, 479, 'sawblade_icon');
     uav_button = game.add.sprite(679, 479, 'uav_icon');
-    
-    // Add and configure the score text fields
-    flowerText = game.add.text(5, 0, 'Flowers: 0');
-    weedText = game.add.text(5, 25, 'Weeds: 0');
 
     // Add our sound effects
     acid_sound = game.add.audio('acid');
@@ -152,13 +152,34 @@ function create() {
     
     // Tint acid_button since it's our default weapon
     acid_button.tint = 0xAABBCC;
+    
+    // Add and configure the score text fields
+    flowerText = game.add.text(5, 0, 'Flowers: 0');
+    flowerText.bringToTop();
+    weedText = game.add.text(5, 25, 'Weeds: 0');
+    weedText.bringToTop();
+    
+    // Add and configure our game info text
+    var description = 'This is your garden.\nDon\'t let it fall into the wrong hands.';
+    var style = { font: '50px Arial', align: 'center', fill: '0xFFEE77' };
+    gameInfoText = game.add.text(game.world.centerX - 395, game.world.centerY - 50, description, style);
+    gameInfoText.bringToTop();
 }
 
 function update() {
-    spawnOccupants();
-    tintBackground();
-    checkInput();
-    checkCollision();
+    if (paused) {
+        if (game.input.activePointer.isDown) {
+            // Delete our info text
+            game.world.remove(gameInfoText);
+            // Start the game
+            paused = false;
+        }
+    } else {
+        spawnOccupants();
+        tintBackground();
+        checkInput();
+        checkCollision();
+    }
 }
 
 // Set all buttons to normal before tinting the currently selected button
