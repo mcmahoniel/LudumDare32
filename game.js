@@ -96,7 +96,7 @@ function create() {
     // Spawn 10 random flowers outside the viewport
     for (var i = 0; i < 10; i++) {
         var whichFlower = Math.floor(Math.random() * 2 + 1);
-        flower = flowers.create(-100, -100, 'flower_' + whichFlower);
+        flower = flowers.create(-100, 800, 'flower_' + whichFlower);
     }
     
     // Define the weeds group and add physics properties
@@ -106,17 +106,17 @@ function create() {
     // Spawn 10 random weeds outside the viewport
     for (var i = 0; i < 10; i++) {
         var whichWeed = Math.floor(Math.random() * 1 + 1);
-        weed = weeds.create(-100, -100, 'weed_' + whichWeed);
+        weed = weeds.create(-100, 800, 'weed_' + whichWeed);
     }
 
     // Define the weaopns group and add physics properties
     weapons = game.add.group();
     weapons.enableBody = true;
     weapons.physicsBodyType = Phaser.Physics.ARCADE;
-    weapons.create(-200, -200, 'acid_weapon');
-    weapons.create(-200, -200, 'fireball_weapon');
-    weapons.create(-200, -200, 'sawblade_weapon');
-    weapons.create(-200, -200, 'uav_weapon');
+    weapons.create(-200, 800, 'acid_weapon');
+    weapons.create(-200, 800, 'fireball_weapon');
+    weapons.create(-200, 800, 'sawblade_weapon');
+    weapons.create(-200, 800, 'uav_weapon');
 
     // Set up inital clock for update();
     time = game.time.now;
@@ -131,6 +131,7 @@ function update() {
     spawnOccupants();
     tintBackground();
     checkInput();
+    checkCollision();
 }
 
 // Set all buttons to normal before tinting the currently selected button
@@ -236,5 +237,11 @@ function checkInput() {
 }
 
 function checkCollision() {
-    
+    game.physics.arcade.collide(flowers, weapons, removeObject, null, this);
+    game.physics.arcade.collide(weeds, weapons, removeObject, null, this);
+}
+
+function removeObject(_object, _weapon) {
+    _object.tint = 0xAABBCC;
+    background.tint = 0xFFFFFF;
 }
