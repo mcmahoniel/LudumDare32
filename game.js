@@ -236,12 +236,52 @@ function checkInput() {
     }
 }
 
+// Detect any collision between flowers/weeds and a projectile
 function checkCollision() {
-    game.physics.arcade.collide(flowers, weapons, removeObject, null, this);
-    game.physics.arcade.collide(weeds, weapons, removeObject, null, this);
+    game.physics.arcade.collide(flowers, weapons, killObject, null, this);
+    game.physics.arcade.collide(weeds, weapons, killObject, null, this);
 }
 
-function removeObject(_object, _weapon) {
+// Tint whatever was collided with and then queue it for removal
+function killObject(_object, _weapon) {
+    // Temporarily color the object to a "dead" color
     _object.tint = 0xAABBCC;
-    background.tint = 0xFFFFFF;
+    
+    // Immediately disable collision to prevent duplicate hits
+    _object.body.enable = false;
+
+    // Decrement flower/weed count
+    if (_object.parent === flowers) {
+        flowerCount--;
+        flowerText.text = 'Flowers: ' + flowerCount;
+    } else {
+        weedCount--;
+        weedText.text = 'Weeds: ' + weedCount;
+    }
+    
+    // Call resetObject() after a half second delay
+    setTimeout(function() { resetObject(_object); }, 500);
+}
+
+// Reset an object and associated plot to its initial settings
+function resetObject(_object) {
+    // Reset flower/weed position outside the viewport
+    _object.x = -100;
+    _object.y = 800;
+    
+    // Reset movement to zero
+    _object.body.velocity.x = 0;
+    _object.body.velocity.y = 0;
+    
+    // Reenable physics
+    _object.body.enable = true;
+    
+    // Reset color
+    _object.tint = 0xFFFFFF;
+    
+    // Get plot index from the flower/weed we're resetting
+    var index = _object.parent.getIndex(_object);
+    
+    // Set the plot to unoccupied so it can be filled again
+    plots.children[index].occupied = false;
 }
