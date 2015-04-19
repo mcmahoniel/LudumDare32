@@ -128,7 +128,36 @@ function create() {
 }
 
 function update() {
-    // Every two seconds, spawn a flower or weed
+    spawnOccupants();
+    tintBackground();
+    checkInput();
+}
+
+// Set all buttons to normal before tinting the currently selected button
+function resetButtons() {
+    acid_button.tint = 0xFFFFFF;
+    fireball_button.tint = 0xFFFFFF;
+    sawblade_button.tint = 0xFFFFFF;
+    uav_button.tint = 0xFFFFFF;
+}
+
+// Tint the background color based on the ratio of flowers to weeds
+function tintBackground() {
+    var ratioFlowersToWeeds = flowerCount / weedCount;
+    
+    if (ratioFlowersToWeeds < 1.0) {
+        background.tint = 0x869E82;
+    } else if (ratioFlowersToWeeds < 0.43) {
+        background.tint = 0xA6AB79;
+    } else if (ratioFlowersToWeeds < 0.12) {
+        background.tint = 0x917B56;
+    } else {
+        background.tint = 0x0EE68;
+    }
+}
+
+// Every two seconds, spawn a flower or a weed on empty plots
+function spawnOccupants() {
     if (game.time.now > time + 2000) {
         // Modify a random plot
         // TODO: Refactor to generate an index between 0 and 9
@@ -165,20 +194,10 @@ function update() {
         
         time = game.time.now;
     }
-    
-    // Tint the background based on how many flowers vs. weeds
-    var ratioFlowersToWeeds = flowerCount / weedCount;
-    if (ratioFlowersToWeeds < 1.0) {
-        background.tint = 0x869E82;
-    } else if (ratioFlowersToWeeds < 0.43) {
-        background.tint = 0xA6AB79;
-    } else if (ratioFlowersToWeeds < 0.12) {
-        background.tint = 0x917B56;
-    } else {
-        background.tint = 0x0EE68;
-    }
-    
-    // Detect input
+}
+
+// Check for weapon selection and firing and spawn projectile
+function checkInput() {
     if (game.input.activePointer.isDown) {
         // Get tap/click position
         var xInput = game.input.activePointer.x;
@@ -214,11 +233,4 @@ function update() {
             }
         }
     }
-}
-
-function resetButtons() {
-    acid_button.tint = 0xFFFFFF;
-    fireball_button.tint = 0xFFFFFF;
-    sawblade_button.tint = 0xFFFFFF;
-    uav_button.tint = 0xFFFFFF;
 }
