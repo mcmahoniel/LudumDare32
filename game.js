@@ -1,16 +1,19 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { 
+    preload: preload, create: create, update: update });
 
+// Declare the sprites globally so we can modify them later
 var background;
-
 var plots;
 var flowers;
 var weeds;
 
+// Declare the game timer
 var time;
 
 function preload() {
     // Load the background image and game sprites
     game.load.image('background', 'assets/background.png');
+    // TODO: Combine sprites into an atlas
     game.load.image('plot', 'assets/plot.png');
     game.load.image('flower_1', 'assets/flower_1.png');
     game.load.image('flower_2', 'assets/flower_2.png');
@@ -21,7 +24,7 @@ function create() {
     // Enable the physics engine
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    // Apply the background sprite and set the initial color tint
+    // Apply the background sprite and set the initial background color
     background = game.add.sprite(0,0, 'background');
     background.tint = 0x0EE68;
     
@@ -46,6 +49,7 @@ function create() {
         }
 
         plot = plots.create(x, y, 'plot');
+        plot.occupied = false;
     }
 
     // Define the flowers group and add physics properties
@@ -73,22 +77,33 @@ function create() {
 }
 
 function update() {
+    // Every two seconds, spawn a flower or weed
     if (game.time.now > time + 2000) {
-        // Every two seconds, spawn a flower or weed on an empty plot
-        var done = false;
-        while (!done) {
-            // Modify a random plot
-            // TODO: Refactor to generate an index between 0 and 9
-            var currentPlot = Math.floor(Math.random() * 10 + 1);
-            if (currentPlot > 9) {
-                currentPlot = 0;
+        // Modify a random plot
+        // TODO: Refactor to generate an index between 0 and 9
+        var currentPlot = Math.floor(Math.random() * 10 + 1);
+        if (currentPlot > 9) {
+            currentPlot = 0;
+        }
+        
+        // Save the plot's position and modify y for flower/weed placement
+        var x = plots.children[currentPlot].x;
+        var y = plots.children[currentPlot].y - 110;
+        
+        // If the plot isn't occupied, add a flower or weed
+        if (plots.children[currentPlot].occupied === false) {
+            var determineOccupant = Math.floor(Math.random() * 2);
+            if (determineOccupant === 0) {
+                // Spawn a flower
+                flowers.children[currentPlot].x = x;
+                flowers.children[currentPlot].y = y;
+            } else {
+                // Spawn a weed
+                weeds.children[currentPlot].x = x;
+                weeds.children[currentPlot].y = y;
             }
             
-            // If the plot isn't occupied, add a flower or weed
-            flowers.children[currentPlot].x = plots.children[currentPlot].x;
-            flowers.children[currentPlot].y = plots.children[currentPlot].y - 110;
-
-            done = true;
+            plots.children[currentPlot].occupied = true;
         }
         
         time = game.time.now;
