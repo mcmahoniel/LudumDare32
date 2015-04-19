@@ -41,6 +41,7 @@ var weed_pain_sound;
 
 // Declare our game state
 var paused = true;
+var gameOver = false;
 
 function preload() {
     // Load the background image and game sprites
@@ -169,12 +170,28 @@ function create() {
 }
 
 function update() {
-    if (paused) {
+    if (paused && gameOver === false) {
         if (game.input.activePointer.isDown) {
             // Delete our info text
             game.world.remove(gameInfoText);
             // Start the game
             paused = false;
+        }
+    } else if (flowerCount === 10 || weedCount === 10) {
+        paused = true;
+        var style;
+        if (flowerCount === 10) {
+            // Display win text
+            style = { font: '50px Arial', align: 'center', fill: '#FFEE77' };
+            var winText = "You've saved the garden!\nGive yourself a pat on the back.\nYou've earned it.";
+            var won = game.add.text(game.world.centerX - 360, game.world.centerY - 70, winText, style);
+            won.bringToTop();
+        } else {
+            // Display lose text
+            style = { font: '50px Arial', align: 'center', fill: '#FF0000' };
+            var loseText = "Your garden is lost.\nGet a new hobby, black thumb.";
+            var lost = game.add.text(game.world.centerX - 340, game.world.centerY - 50, loseText, style);
+            lost.bringToTop();
         }
     } else {
         spawnOccupants();
