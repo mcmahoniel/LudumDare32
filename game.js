@@ -6,6 +6,7 @@ var background;
 var plots;
 var flowers;
 var weeds;
+var weapons;
 
 // Declare the text fields
 var flowerText;
@@ -20,12 +21,12 @@ var time;
 
 function preload() {
     // Load the background image and game sprites
+    // TODO: Combine sprites into an atlas
     game.load.image('background', 'assets/background.png');
     game.load.image('acid_icon', 'assets/acid_icon.png');
     game.load.image('fireball_icon', 'assets/fireball_icon.png');
     game.load.image('sawblade_icon', 'assets/sawblade_icon.png');
     game.load.image('uav_icon', 'assets/uav_icon.png');
-    // TODO: Combine sprites into an atlas
     game.load.image('plot', 'assets/plot.png');
     game.load.image('flower_1', 'assets/flower_1.png');
     game.load.image('flower_2', 'assets/flower_2.png');
@@ -98,6 +99,15 @@ function create() {
         weed = weeds.create(-100, -100, 'weed_' + whichWeed);
     }
 
+    // Define the weaopns group and add physics properties
+    weapons = game.add.group();
+    weapons.enableBody = true;
+    weapons.physicsBodyType = Phaser.Physics.ARCADE;
+    weapons.create(-100, -100, 'acid_weapon');
+    weapons.create(-100, -100, 'fireball_weapon');
+    weapons.create(-100, -100, 'sawblade_weapon');
+    weapons.create(-100, -100, 'uav_weapon');
+
     // Set up inital clock for update();
     time = game.time.now;
 }
@@ -153,7 +163,10 @@ function update() {
         background.tint = 0x0EE68;
     }
     
-    if (game.input.activePointer.isDown) {
-        // Do something
+    if (game.input.activePointer.isDown && game.input.activePointer.y < 470) {
+        // Shoot selected weapon in direction of tap/click
+        weapons.children[0].x = 400;
+        weapons.children[0].y = 500;
+        game.physics.arcade.moveToPointer(weapons.children[0], 300);
     }
 }
