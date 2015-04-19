@@ -277,13 +277,21 @@ function killObject(_object, _weapon) {
     // Immediately disable collision to prevent duplicate hits
     _object.body.enable = false;
 
-    // Decrement flower/weed count
+    // Decrement flower/weed count, play appropriate pain sound
     if (_object.parent === flowers) {
         flowerCount--;
         flowerText.text = 'Flowers: ' + flowerCount;
+        // Play either pain sound
+        var whichSound = Math.floor(Math.random() * 2);
+        if (whichSound === 0) {
+            flower_pain_sound_1.play();
+        } else {
+            flower_pain_sound_2.play();
+        }
     } else {
         weedCount--;
         weedText.text = 'Weeds: ' + weedCount;
+        weed_pain_sound.play();
     }
     
     // Call resetObject() after a half second delay
