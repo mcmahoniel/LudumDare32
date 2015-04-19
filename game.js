@@ -98,7 +98,7 @@ function create() {
     plots = game.add.group();
     for (var i = 0; i < 10; i++) {
         // Determine valid X/Y coordinates in the game area
-        var x = Math.floor(Math.random() * (800 - (i * 8)) + 1);
+        var x = i * 80;
         var y = Math.floor(Math.random() * (600 - (i * 6)) + 1);
 
         // Prevent sprite from extending off of the right or bottom
