@@ -113,10 +113,10 @@ function create() {
     weapons = game.add.group();
     weapons.enableBody = true;
     weapons.physicsBodyType = Phaser.Physics.ARCADE;
-    weapons.create(-100, -100, 'acid_weapon');
-    weapons.create(-100, -100, 'fireball_weapon');
-    weapons.create(-100, -100, 'sawblade_weapon');
-    weapons.create(-100, -100, 'uav_weapon');
+    weapons.create(-200, -200, 'acid_weapon');
+    weapons.create(-200, -200, 'fireball_weapon');
+    weapons.create(-200, -200, 'sawblade_weapon');
+    weapons.create(-200, -200, 'uav_weapon');
 
     // Set up inital clock for update();
     time = game.time.now;
@@ -233,4 +233,8 @@ function checkInput() {
             }
         }
     }
+}
+
+function checkCollision() {
+    
 }
