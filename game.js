@@ -52,8 +52,8 @@ function preload() {
     game.load.image('sawblade_icon', 'assets/sprites/sawblade_icon.png');
     game.load.image('uav_icon', 'assets/sprites/uav_icon.png');
     game.load.image('plot', 'assets/sprites/plot.png');
-    game.load.image('flower_1', 'assets/sprites/flower_1.png');
-    game.load.image('flower_2', 'assets/sprites/flower_2.png');
+    game.load.spritesheet('flower_1', 'assets/sprites/flower_1.png', 64, 128);
+    game.load.spritesheet('flower_2', 'assets/sprites/flower_2.png', 64, 128);
     game.load.image('weed_1', 'assets/sprites/weed_1.png');
     game.load.image('acid_weapon', 'assets/sprites/acid_weapon.png');
     game.load.image('fireball_weapon', 'assets/sprites/fireball_weapon.png');
@@ -125,6 +125,12 @@ function create() {
     for (var i = 0; i < 10; i++) {
         var whichFlower = Math.floor(Math.random() * 2 + 1);
         flower = flowers.create(-100, 800, 'flower_' + whichFlower);
+        flower.animations.add('happy_animation', [0, 1, 2, 3], 5, true);
+        flower.animations.add('acid_animation', [4], 1, true);
+        flower.animations.add('fireball_animation', [5], 1, true);
+        flower.animations.add('sawblade_animation', [6], 1, true);
+        flower.animations.add('uav_animation', [7], 5, true);
+        flower.play('happy_animation');
     }
     
     // Define the weeds group and add physics properties
@@ -331,8 +337,16 @@ function checkCollision() {
 
 // Tint whatever was collided with and then queue it for removal
 function killObject(_object, _weapon) {
-    // Temporarily color the object to a "dead" color
-    _object.tint = 0xAABBCC;
+    // Play appropriate death animation
+    if (_weapon.key === 'acid_weapon') {
+        _object.animations.play('acid_animation');
+    } else if (_weapon.key === 'fireball_weapon') {
+        _object.animations.play('fireball_animation');
+    } else if (_weapon.key === 'sawblade_weapon') {
+        _object.animations.play('sawblade_animation');
+    } else if (_weapon.key === 'uav_weapon') {
+        _object.animations.play('uav_animation');
+    }
     
     // Immediately disable collision to prevent duplicate hits
     _object.body.enable = false;
@@ -373,6 +387,9 @@ function resetObject(_object) {
     
     // Reset color
     _object.tint = 0xFFFFFF;
+    
+    // Reset happy animation
+    _object.animations.play('happy_animation');
     
     // Get plot index from the flower/weed we're resetting
     var index = _object.parent.getIndex(_object);
