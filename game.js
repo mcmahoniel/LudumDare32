@@ -178,6 +178,8 @@ function update() {
             paused = false;
         }
     } else if (flowerCount === 10 || weedCount === 10) {
+        // Detect 10 flowers or weeds and end the game accordingly
+        gameOver = true;
         paused = true;
         var style;
         if (flowerCount === 10) {
