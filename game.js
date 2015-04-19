@@ -154,14 +154,16 @@ function create() {
     acid_button.tint = 0xAABBCC;
     
     // Add and configure the score text fields
-    flowerText = game.add.text(5, 0, 'Flowers: 0');
+    var style = { fill: '#B208C4' };
+    flowerText = game.add.text(5, 0, 'Flowers: 0', style);
     flowerText.bringToTop();
-    weedText = game.add.text(5, 25, 'Weeds: 0');
+    style = { fill: '#D4691E' };
+    weedText = game.add.text(5, 25, 'Weeds: 0', style);
     weedText.bringToTop();
     
     // Add and configure our game info text
     var description = 'This is your garden.\nDon\'t let it fall into the wrong hands.';
-    var style = { font: '50px Arial', align: 'center', fill: '0xFFEE77' };
+    style = { font: '50px Arial', align: 'center', fill: '#3B5A75' };
     gameInfoText = game.add.text(game.world.centerX - 395, game.world.centerY - 50, description, style);
     gameInfoText.bringToTop();
 }
