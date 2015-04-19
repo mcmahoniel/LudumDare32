@@ -59,7 +59,7 @@ function preload() {
     game.load.audio('acid', 'assets/sounds/acid.wav');
     game.load.audio('fireball', 'assets/sounds/fireball.wav');
     game.load.audio('sawblade', 'assets/sounds/sawblade.wav');
-    game.load.audio('uav', 'assets/sounds/sawblade.wav');
+    game.load.audio('uav', 'assets/sounds/uav.wav');
     game.load.audio('flower_pain_1', 'assets/sounds/flower_pain_1.wav');
     game.load.audio('flower_pain_2', 'assets/sounds/flower_pain_2.wav');
     game.load.audio('weed_pain', 'assets/sounds/weed_pain.wav');
@@ -233,11 +233,29 @@ function checkInput() {
         
         // If y < 470, shoot the current weapon
         if (yInput < 470 && game.time.now > (weaponLastFired + 1000)) {
-            // Shoot selected weapon in direction of tap/click
+            // Position the correct projectile at the bottom of the viewport
             var weapon = weapons.children[currentWeapon];
             weapon.x = 400;
             weapon.y = 500;
+            
+            // Shoot selected weapon in direction of tap/click
             game.physics.arcade.moveToPointer(weapon, 500);
+            
+            // Play the appropriate weapon sound
+            switch (currentWeapon) {
+                case 0:
+                    acid_sound.play();
+                    break;
+                case 1:
+                    fireball_sound.play();
+                    break;
+                case 2:
+                    sawblade_sound.play();
+                    break;
+                case 3:
+                    uav_sound.play();
+                    break;
+            }
             
             weaponLastFired = game.time.now;
         } else if (yInput > 470) {
