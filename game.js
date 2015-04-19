@@ -12,6 +12,12 @@ var weapons;
 var flowerText;
 var weedText;
 
+// Declare our buttons
+var acid_button;
+var fireball_button;
+var sawblade_button;
+var uav_button;
+
 // Declare our score trackers
 var flowerCount = 0;
 var weedCount = 0;
@@ -50,10 +56,10 @@ function create() {
     background.tint = 0x0EE68;
     
     // Add the weapon selection buttons
-    game.add.sprite(25, 479, 'acid_icon');
-    game.add.sprite(146, 479, 'fireball_icon');
-    game.add.sprite(558, 479, 'sawblade_icon');
-    game.add.sprite(679, 479, 'uav_icon');
+    acid_button = game.add.sprite(25, 479, 'acid_icon');
+    fireball_button = game.add.sprite(146, 479, 'fireball_icon');
+    sawblade_button = game.add.sprite(558, 479, 'sawblade_icon');
+    uav_button = game.add.sprite(679, 479, 'uav_icon');
     
     // Add and configure the score text fields
     flowerText = game.add.text(5, 0, 'Flowers: 0');
@@ -188,13 +194,28 @@ function update() {
             // Detect weapon selection
             if (xInput > 25 && xInput < 121) {
                 currentWeapon = 0;
+                resetButtons();
+                acid_button.tint = 0xAABBCC;
             } else if (xInput > 146 && xInput < 242) {
                 currentWeapon = 1;
+                resetButtons();
+                fireball_button.tint = 0xAABBCC;
             } else if (xInput > 558 && xInput < 654) {
                 currentWeapon = 2;
+                resetButtons();
+                sawblade_button.tint = 0xAABBCC;
             } else if (xInput > 679 && xInput < 775) {
                 currentWeapon = 3;
+                resetButtons();
+                uav_button.tint = 0xAABBCC;
             }
         }
     }
+}
+
+function resetButtons() {
+    acid_button.tint = 0xFFFFFF;
+    fireball_button.tint = 0xFFFFFF;
+    sawblade_button.tint = 0xFFFFFF;
+    uav_button.tint = 0xFFFFFF;
 }
