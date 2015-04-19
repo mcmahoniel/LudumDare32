@@ -12,9 +12,12 @@ var weapons;
 var flowerText;
 var weedText;
 
-// Declare our object trackers
+// Declare our score trackers
 var flowerCount = 0;
 var weedCount = 0;
+
+// Set our default weapon
+var currentWeapon = 0;
 
 // Declare the game timer
 var time;
@@ -48,8 +51,8 @@ function create() {
     // Add the weapon selection buttons
     game.add.sprite(25, 479, 'acid_icon');
     game.add.sprite(146, 479, 'fireball_icon');
-    game.add.sprite(679, 479, 'sawblade_icon');
-    game.add.sprite(558, 479, 'uav_icon');
+    game.add.sprite(558, 479, 'sawblade_icon');
+    game.add.sprite(679, 479, 'uav_icon');
     
     // Add and configure the score text fields
     flowerText = game.add.text(5, 0, 'Flowers: 0');
@@ -163,10 +166,30 @@ function update() {
         background.tint = 0x0EE68;
     }
     
-    if (game.input.activePointer.isDown && game.input.activePointer.y < 470) {
-        // Shoot selected weapon in direction of tap/click
-        weapons.children[0].x = 400;
-        weapons.children[0].y = 500;
-        game.physics.arcade.moveToPointer(weapons.children[0], 300);
+    // Detect input
+    if (game.input.activePointer.isDown) {
+        // Get tap/click position
+        var xInput = game.input.activePointer.x;
+        var yInput = game.input.activePointer.y;
+        
+        // If y < 470, shoot the current weapon
+        if (yInput < 470) {
+            // Shoot selected weapon in direction of tap/click
+            var weapon = weapons.children[currentWeapon];
+            weapon.x = 400;
+            weapon.y = 500;
+            game.physics.arcade.moveToPointer(weapon, 300);
+        } else {
+            // Detect weapon selection
+            if (xInput > 25 && xInput < 121) {
+                currentWeapon = 0;
+            } else if (xInput > 146 && xInput < 242) {
+                currentWeapon = 1;
+            } else if (xInput > 558 && xInput < 654) {
+                currentWeapon = 2;
+            } else if (xInput > 679 && xInput < 775) {
+                currentWeapon = 3;
+            }
+        }
     }
 }
