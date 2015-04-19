@@ -54,7 +54,7 @@ function preload() {
     game.load.image('plot', 'assets/sprites/plot.png');
     game.load.spritesheet('flower_1', 'assets/sprites/flower_1.png', 64, 128);
     game.load.spritesheet('flower_2', 'assets/sprites/flower_2.png', 64, 128);
-    game.load.image('weed_1', 'assets/sprites/weed_1.png');
+    game.load.spritesheet('weed_1', 'assets/sprites/weed_1.png', 64, 128);
     game.load.image('acid_weapon', 'assets/sprites/acid_weapon.png');
     game.load.image('fireball_weapon', 'assets/sprites/fireball_weapon.png');
     game.load.image('sawblade_weapon', 'assets/sprites/sawblade_weapon.png');
@@ -141,6 +141,12 @@ function create() {
     for (var i = 0; i < 10; i++) {
         var whichWeed = Math.floor(Math.random() * 1 + 1);
         weed = weeds.create(-100, 800, 'weed_' + whichWeed);
+        weed.animations.add('happy_animation', [0, 1, 2, 3], 5, true);
+        weed.animations.add('acid_animation', [4], 1, true);
+        weed.animations.add('fireball_animation', [5], 1, true);
+        weed.animations.add('sawblade_animation', [6], 1, true);
+        weed.animations.add('uav_animation', [7], 5, true);
+        weed.play('happy_animation');
     }
 
     // Define the weaopns group and add physics properties
