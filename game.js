@@ -6,6 +6,8 @@ var plots;
 var flowers;
 var weeds;
 
+var time;
+
 function preload() {
     // Load the background image and game sprites
     game.load.image('background', 'assets/background.png');
@@ -22,6 +24,7 @@ function create() {
     background.tint = 0x0EE68;
     
     // Generate the flower/weed plots
+    // TODO: Prevent overlapping plots during generation
     plots = game.add.group();
     for (var i = 0; i < 10; i++) {
         // Determine valid X/Y coordinates in the game area
@@ -35,9 +38,9 @@ function create() {
         if (y > 400) {
             // Leave room for bottom text and interaction area
             y = 400;
-        } else if (y < 64) {
+        } else if (y < 110) {
             // Leave enough room for flower to prevent clipping
-            y = 64;
+            y = 110;
         }
 
         plot = plots.create(x, y, 'plot');
@@ -47,17 +50,37 @@ function create() {
     flowers = game.add.group();
     flowers.enableBody = true;
     flowers.physicsBodyType = Phaser.Physics.ARCADE;
+    for (var i = 0; i < 10; i++) {
+        flower = flowers.create(-100, -100, 'test_flower');
+    }
     
     // Define the weeds group and add physics properties
     weeds = game.add.group();
     weeds.enableBody = true;
     weeds.physicsBodyType = Phaser.Physics.ARCADE;
-    
-    // Manually add test plot/flower
-    //game.add.sprite(64,64, 'plot');
-    //game.add.sprite(64,8, 'test_flower');
+
+    // Set up inital clock for update();
+    time = game.time.now;
 }
 
 function update() {
-    //background.tint = 0x123456;
+    if (game.time.now > time + 2000) {
+        // Every two seconds, spawn a flower or weed on an empty plot
+        var done = false;
+        while (!done) {
+            // Modify a random plot
+            // TODO: Refactor to generate an index between 0 and 9
+            var currentPlot = Math.floor(Math.random() * 10 + 1);
+            if (currentPlot > 9) {
+                currentPlot = 0;
+            }
+            
+            // If the plot isn't occupied, add a flower or weed
+            flowers.children[currentPlot].x = plots.children[currentPlot].x;
+            flowers.children[currentPlot].y = plots.children[currentPlot].y - 110;
+
+            done = true;
+        }
+        time = game.time.now;
+    }
 }
