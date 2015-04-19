@@ -122,6 +122,9 @@ function create() {
     time = game.time.now;
     // Set up initial clock for weapon firing
     weaponLastFired = game.time.now;
+    
+    // Tint acid_button since it's our default weapon
+    acid_button.tint = 0xAABBCC;
 }
 
 function update() {
@@ -187,7 +190,7 @@ function update() {
             var weapon = weapons.children[currentWeapon];
             weapon.x = 400;
             weapon.y = 500;
-            game.physics.arcade.moveToPointer(weapon, 300);
+            game.physics.arcade.moveToPointer(weapon, 500);
             
             weaponLastFired = game.time.now;
         } else if (yInput > 470) {
