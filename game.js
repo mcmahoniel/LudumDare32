@@ -14,6 +14,7 @@ function preload() {
     game.load.image('plot', 'assets/plot.png');
     game.load.image('flower_1', 'assets/flower_1.png');
     game.load.image('flower_2', 'assets/flower_2.png');
+    game.load.image('weed_1', 'assets/weed_1.png');
 }
 
 function create() {
@@ -51,9 +52,9 @@ function create() {
     flowers = game.add.group();
     flowers.enableBody = true;
     flowers.physicsBodyType = Phaser.Physics.ARCADE;
+    // Spawn 10 random flowers outside the viewport
     for (var i = 0; i < 10; i++) {
-        // Spawn a random flower type
-        var whichFlower = Math.floor(Math.random() * 2 +1);
+        var whichFlower = Math.floor(Math.random() * 2 + 1);
         flower = flowers.create(-100, -100, 'flower_' + whichFlower);
     }
     
@@ -61,6 +62,11 @@ function create() {
     weeds = game.add.group();
     weeds.enableBody = true;
     weeds.physicsBodyType = Phaser.Physics.ARCADE;
+    // Spawn 10 random weeds outside the viewport
+    for (var i = 0; i < 10; i++) {
+        var whichWeed = Math.floor(Math.random() * 1 + 1);
+        weed = weeds.create(-100, -100, 'weed_' + whichWeed);
+    }
 
     // Set up inital clock for update();
     time = game.time.now;
