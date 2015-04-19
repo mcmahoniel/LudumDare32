@@ -29,22 +29,40 @@ var currentWeapon = 0;
 var time;
 var weaponLastFired;
 
+// Declare our sound effects
+var acid_sound;
+var fireball_sound;
+var sawblade_sound;
+var uav_sound;
+var flower_pain_sound_1;
+var flower_pain_sound_2;
+var weed_pain_sound;
+
 function preload() {
     // Load the background image and game sprites
     // TODO: Combine sprites into an atlas
-    game.load.image('background', 'assets/background.png');
-    game.load.image('acid_icon', 'assets/acid_icon.png');
-    game.load.image('fireball_icon', 'assets/fireball_icon.png');
-    game.load.image('sawblade_icon', 'assets/sawblade_icon.png');
-    game.load.image('uav_icon', 'assets/uav_icon.png');
-    game.load.image('plot', 'assets/plot.png');
-    game.load.image('flower_1', 'assets/flower_1.png');
-    game.load.image('flower_2', 'assets/flower_2.png');
-    game.load.image('weed_1', 'assets/weed_1.png');
-    game.load.image('acid_weapon', 'assets/acid_weapon.png');
-    game.load.image('fireball_weapon', 'assets/fireball_weapon.png');
-    game.load.image('sawblade_weapon', 'assets/sawblade_weapon.png');
-    game.load.image('uav_weapon', 'assets/uav_weapon.png');
+    game.load.image('background', 'assets/sprites/background.png');
+    game.load.image('acid_icon', 'assets/sprites/acid_icon.png');
+    game.load.image('fireball_icon', 'assets/sprites/fireball_icon.png');
+    game.load.image('sawblade_icon', 'assets/sprites/sawblade_icon.png');
+    game.load.image('uav_icon', 'assets/sprites/uav_icon.png');
+    game.load.image('plot', 'assets/sprites/plot.png');
+    game.load.image('flower_1', 'assets/sprites/flower_1.png');
+    game.load.image('flower_2', 'assets/sprites/flower_2.png');
+    game.load.image('weed_1', 'assets/sprites/weed_1.png');
+    game.load.image('acid_weapon', 'assets/sprites/acid_weapon.png');
+    game.load.image('fireball_weapon', 'assets/sprites/fireball_weapon.png');
+    game.load.image('sawblade_weapon', 'assets/sprites/sawblade_weapon.png');
+    game.load.image('uav_weapon', 'assets/sprites/uav_weapon.png');
+    
+    // Load sound effects
+    game.load.audio('acid', 'assets/sounds/acid.wav');
+    game.load.audio('fireball', 'assets/sounds/fireball.wav');
+    game.load.audio('sawblade', 'assets/sounds/sawblade.wav');
+    game.load.audio('uav', 'assets/sounds/sawblade.wav');
+    game.load.audio('flower_pain_1', 'assets/sounds/flower_pain_1.wav');
+    game.load.audio('flower_pain_2', 'assets/sounds/flower_pain_2.wav');
+    game.load.audio('weed_pain', 'assets/sounds/weed_pain.wav');
 }
 
 function create() {
@@ -65,6 +83,15 @@ function create() {
     flowerText = game.add.text(5, 0, 'Flowers: 0');
     weedText = game.add.text(5, 25, 'Weeds: 0');
 
+    // Add our sound effects
+    acid_sound = game.add.audio('acid');
+    fireball_sound = game.add.audio('fireball');
+    sawblade_sound = game.add.audio('sawblade');
+    uav_sound = game.add.audio('uav');
+    flower_pain_sound_1 = game.add.audio('flower_pain_1');
+    flower_pain_sound_2 = game.add.audio('flower_pain_2');
+    weed_pain_sound = game.add.audio('weed_pain');
+    
     // Generate the flower/weed plots
     // TODO: Prevent overlapping plots during generation
     plots = game.add.group();
