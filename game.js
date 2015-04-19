@@ -19,8 +19,9 @@ var weedCount = 0;
 // Set our default weapon
 var currentWeapon = 0;
 
-// Declare the game timer
+// Declare the game timers
 var time;
+var weaponLastFired;
 
 function preload() {
     // Load the background image and game sprites
@@ -113,6 +114,8 @@ function create() {
 
     // Set up inital clock for update();
     time = game.time.now;
+    // Set up initial clock for weapon firing
+    weaponLastFired = game.time.now;
 }
 
 function update() {
@@ -173,12 +176,14 @@ function update() {
         var yInput = game.input.activePointer.y;
         
         // If y < 470, shoot the current weapon
-        if (yInput < 470) {
+        if (yInput < 470 && game.time.now > (weaponLastFired + 1000)) {
             // Shoot selected weapon in direction of tap/click
             var weapon = weapons.children[currentWeapon];
             weapon.x = 400;
             weapon.y = 500;
             game.physics.arcade.moveToPointer(weapon, 300);
+            
+            weaponLastFired = game.time.now;
         } else {
             // Detect weapon selection
             if (xInput > 25 && xInput < 121) {
