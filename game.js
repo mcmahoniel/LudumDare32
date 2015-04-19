@@ -184,7 +184,7 @@ function update() {
             game.physics.arcade.moveToPointer(weapon, 300);
             
             weaponLastFired = game.time.now;
-        } else {
+        } else if (yInput > 470) {
             // Detect weapon selection
             if (xInput > 25 && xInput < 121) {
                 currentWeapon = 0;
